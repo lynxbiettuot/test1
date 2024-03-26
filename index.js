@@ -6,11 +6,11 @@ app.set('view engine', 'pug');
 app.set('views', './views');
 
 app.get("/", (req, res) => {
-    res.send("Trang chủ")
+    res.render("client/pages/home/index.pug");
 });
 
 app.get("/products", (req, res) => {
-    res.send("Danh sách sản phẩm")
+    res.render("client/pages/products/index.pug");
 });
 
 app.listen(port, () => {
