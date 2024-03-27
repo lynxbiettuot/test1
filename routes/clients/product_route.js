@@ -5,4 +5,4 @@ route.get("/", (req, res) => {
     res.render("client/pages/products/index.pug");
 });
 
-module.exports = route
+module.exports = route;
