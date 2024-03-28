@@ -1,6 +1,9 @@
 const express = require("express");
 const dotenv = require("dotenv");
-dotenv.config()
+const Database = require("./config/database.js");// Lấy dữ liệu với database   
+dotenv.config();
+
+Database.connect();//Kết nối với db
 
 const route = require("./routes/clients/index_route.js");
 
