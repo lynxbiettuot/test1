@@ -10,6 +10,8 @@ const port = process.env.PORT;//Bao mat bien port
 app.set('view engine', 'pug');
 app.set('views', './views');
 
+app.use(express.static('public'))
+
 //Route
 route(app);
 
