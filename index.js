@@ -5,7 +5,8 @@ dotenv.config();
 
 Database.connect();//Kết nối với db
 
-const route = require("./routes/clients/index_route.js");
+const routeAdmin = require("./routes/admin/index.route.js");
+const routeClient = require("./routes/clients/index_route.js");
 
 const app = express();
 const port = process.env.PORT;//Bao mat bien port
@@ -16,7 +17,8 @@ app.set('views', './views');
 app.use(express.static('public'))
 
 //Route
-route(app);
+routeAdmin(app);
+routeClient(app);
 
 app.listen(port, () => {
     console.log(`App listen on port ${port}`);
