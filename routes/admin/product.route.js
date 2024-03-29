@@ -3,5 +3,5 @@ const systemConfig = require("../../config/system");// Lấy ra biến trong cò
 
 module.exports = (app) => {
     const path_admin = `/${systemConfig.prefixAdmin}`;
-    app.use(path_admin + "/dashboard", dashBoardRoute); 
+    app.use(path_admin + "/products", dashBoardRoute); 
 }
