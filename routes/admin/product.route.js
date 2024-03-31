@@ -1,7 +1,10 @@
-const dashBoardRoute = require("./dashboard.route.js");//Nhúng file home_route vào file này
-const systemConfig = require("../../config/system");// Lấy ra biến trong cònfig
+const express = require("express");//Lấy dữ liệu từ biến express
+const route = express.Router();//tạo 1 route tên route
 
-module.exports = (app) => {
-    const path_admin = `/${systemConfig.prefixAdmin}`;
-    app.use(path_admin + "/products", dashBoardRoute); 
-}
+//Nhungs file trong dashboard.controller owr controller
+  
+const controller = require("../../controller/admin/product.controller.js");
+
+route.get("/",controller.index);// Dấu / mặc định là vào trang /admin/dashboard vì bên index đã có export
+
+module.exports = route; 
