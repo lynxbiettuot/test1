@@ -3,6 +3,7 @@ const Product = require("../../models/product.model.js");
 const filterHelper = require("../../helpers/filter.helper.js");
 const paginationHelper = require("../../helpers/pagination.helper.js");
 const { isObjectIdOrHexString } = require("mongoose");
+const systemConfig = require("../../config/system.js");
 
 module.exports.index = async (req, res) => {
     //Lấy data
@@ -44,4 +45,19 @@ module.exports.index = async (req, res) => {
         keyword: req.query.keyword,
         objectPagination: objectPagination
     });
+}
+
+module.exports.changeStatus = async (req, res) => {
+    const status = req.params.status
+    const id = req.params.id
+    //Update database
+    await Product.updateOne({
+        //object 1 la truyen vao key muon tim
+        _id: id,
+    },{
+        //object2 la chua data update
+        status: status
+    }); 
+
+    res.redirect(`back`);
 }
