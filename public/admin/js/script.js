@@ -42,3 +42,19 @@ if(formSearch) {
         window.location.href = url.href;
     });
 }
+
+//Button pagination
+const listButtonPagination = document.querySelectorAll("[button-pagination]");
+if(listButtonPagination.length > 0) {
+    let url = new URL(window.location.href);
+    listButtonPagination.forEach((button) => {
+        button.addEventListener("click", () => {
+            const page = button.getAttribute("button-pagination");
+            console.log(page);
+            url.searchParams.set("page", page);
+            window.location.href = url.href;
+        });
+    });
+}
+//End button pagination
+
