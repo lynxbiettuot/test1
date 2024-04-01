@@ -22,3 +22,23 @@ if(listButtonStatus.length > 0) {
 }
 
 //end button status
+const formSearch = document.querySelector("#form-search");
+if(formSearch) {
+    let url = new URL(window.location.href);
+
+    formSearch.addEventListener("submit", (event) => {
+        //Ham nay ngan chan hanh vi mac dinh cua formSearch do
+        event.preventDefault();
+
+        const keyword = event.target.elements.keyword.value;
+        console.log(keyword);
+
+        if(keyword) {
+            url.searchParams.set("keyword", keyword);
+        }else {
+            url.searchParams.delete("keyword");
+        }
+        console.log(url);
+        window.location.href = url.href;
+    });
+}
