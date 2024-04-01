@@ -1,6 +1,7 @@
 //[GET] /admin/products
 const Product = require("../../models/product.model.js");
 const filterHelper = require("../../helpers/filter.helper.js");
+const paginationHelper = require("../../helpers/pagination.helper.js");
 const { isObjectIdOrHexString } = require("mongoose");
 
 module.exports.index = async (req, res) => {
@@ -30,19 +31,8 @@ module.exports.index = async (req, res) => {
 
 //Pagination-Phân trang
 
-    const objectPagination = {
-        currentPage: 1,
-        limitItems: 4
-    }
-    
-    if(req.query.page) {
-        objectPagination.currentPage = parseInt(req.query.page);
-    }
-
-    objectPagination.skip = (objectPagination.currentPage-1)*objectPagination.limitItems;
-
     const countRecords = await Product.countDocuments(find);
-    objectPagination.totalPage = Math.ceil(countRecords/objectPagination.limitItems);
+    const objectPagination = paginationHelper(req,countRecords);
 //End-Kết thúc phân trang
     //Giới hạn 4 phần tử khi dùng limit và bỏ qua 4 phần tử đầu khi dùng skip là hai hàm có sẵn
     const products = await Product.find(find).limit(objectPagination.limitItems).skip(objectPagination.skip);
