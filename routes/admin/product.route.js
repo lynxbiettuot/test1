@@ -11,4 +11,6 @@ route.patch("/change-status/:status/:id",controller.changeStatus);//Dáº¥u : thá»
 
 route.patch("/change-multi",controller.changeMulti);
 
+route.delete("/delete/:id",controller.deleteItem);
+
 module.exports = route; 

@@ -58,6 +58,7 @@ if(listButtonPagination.length > 0) {
 }
 //End button pagination
 
+//Button change-status
 const listButtonChangeStatus = document.querySelectorAll("[button-change-status]");
 if(listButtonChangeStatus.length > 0) {
     const formChangeStatus = document.querySelector("[form-change-status]");
@@ -137,3 +138,27 @@ if(checkBoxMulti) {
         });
     }
 //end form change multi
+
+//Button-delete
+const listButtonDelete = document.querySelectorAll("[button-delete]");
+if(listButtonDelete.length > 0) {
+    const formDeleteItem = document.querySelector("[form-delete-item]");
+
+    listButtonDelete.forEach(button => {
+        button.addEventListener("click", () => {
+            const isCondirm = confirm(" Bạn có chắc muốn xóa ?");
+
+            if(isCondirm) {
+                const id = button.getAttribute("data-id");
+                const path = formDeleteItem.getAttribute("data-path");
+
+                const action =  `${path}/${id}?_method=DELETE`;
+
+                formDeleteItem.action = action;
+
+                formDeleteItem.submit();
+            }
+        });
+    });
+}
+//End Button-delete
