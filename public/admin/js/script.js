@@ -117,7 +117,6 @@ if(checkBoxMulti) {
             event.preventDefault();
 
             const type = formChangeMulti.querySelector("select[name='type']").value;
-            console.log(type);
             
             const listInputChecked = document.querySelectorAll("input[name='id']:checked");
             if(listInputChecked.length > 0) {
@@ -125,7 +124,16 @@ if(checkBoxMulti) {
 
                 listInputChecked.forEach((input) => {
                     const id = input.value;
-                    ids.push(id);
+
+                    if(type == "change-position") {
+                        //Di ra the ngoai no
+                        const position = input.closest("tr").querySelector("input[name='position']").value;
+                        console.log(position);
+
+                        ids.push(`${id}-${position}`);
+                    }else {
+                        ids.push(id);
+                    }
                 });
 
 
@@ -135,12 +143,12 @@ if(checkBoxMulti) {
                 input.value = stringIds;
                 if(type == "delete-all") {
                     const isConfirm = confirm("Bạn có chắc muốn xóa?");
-                    if(isConfirm) {
-                        formChangeMulti.submit();
+                    if(!isConfirm) {
+                        return;
                     }
-                }else {
-                    formChangeMulti.submit();
                 }
+
+                formChangeMulti.submit();
             }else { 
                 alert("Vui lòng chọn ít nhất một bản nghi");
             }

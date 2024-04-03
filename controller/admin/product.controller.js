@@ -37,7 +37,11 @@ module.exports.index = async (req, res) => {
     const objectPagination = paginationHelper(req,countRecords);
 //End-Kết thúc phân trang
     //Giới hạn 4 phần tử khi dùng limit và bỏ qua 4 phần tử đầu khi dùng skip là hai hàm có sẵn
-    const products = await Product.find(find).limit(objectPagination.limitItems).skip(objectPagination.skip);
+    const products = await Product
+    .find(find)
+    .limit(objectPagination.limitItems)
+    .skip(objectPagination.skip)
+    .sort({ position: "desc" });
 
     res.render("admin/page/products/index.pug", {
         pageTitle : "Trang danh sách sản phẩm",
@@ -96,6 +100,19 @@ module.exports.changeMulti = async (req, res) => {
             },{
                 deleted: true
             });
+            break;
+        case "change-position":
+            for(const item of ids) {
+                let [id, position] = item.split("-");
+                position = parseInt(position);
+                
+                await Product.updateOne({
+                    _id: id
+                },{
+                    position: position //Biến data-Tự định nghĩa
+                });
+            }
+            break;
         default:
             break;
     }

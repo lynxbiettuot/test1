@@ -6,7 +6,7 @@ module.exports.index = async (req, res) => {
     const products = await Product.find({
         status : "active",//tim cac ban ghi co cac truong nhu dong 6 va 7
         deleted : false
-    });// laay db bang ham find
+    }).sort({ position : "desc" });// laay db bang ham find
     for(const item of products) {
         item.newPrice = (item.price * (100 - item.discountPercentage) /100).toFixed();
     }
