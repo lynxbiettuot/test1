@@ -115,6 +115,9 @@ if(checkBoxMulti) {
     if(formChangeMulti) {
         formChangeMulti.addEventListener ("submit", (event) => {
             event.preventDefault();
+
+            const type = formChangeMulti.querySelector("select[name='type']").value;
+            console.log(type);
             
             const listInputChecked = document.querySelectorAll("input[name='id']:checked");
             if(listInputChecked.length > 0) {
@@ -130,8 +133,14 @@ if(checkBoxMulti) {
 
                 const input = formChangeMulti.querySelector("input[name='ids']");
                 input.value = stringIds;
-
-                formChangeMulti.submit();
+                if(type == "delete-all") {
+                    const isConfirm = confirm("Bạn có chắc muốn xóa?");
+                    if(isConfirm) {
+                        formChangeMulti.submit();
+                    }
+                }else {
+                    formChangeMulti.submit();
+                }
             }else { 
                 alert("Vui lòng chọn ít nhất một bản nghi");
             }
@@ -162,3 +171,5 @@ if(listButtonDelete.length > 0) {
     });
 }
 //End Button-delete
+
+//

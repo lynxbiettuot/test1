@@ -90,7 +90,12 @@ module.exports.changeMulti = async (req, res) => {
                 status: type
             }); 
             break;
-        
+        case "delete-all":
+            await Product.updateMany ({
+                _id: { $in : ids}
+            },{
+                deleted: true
+            });
         default:
             break;
     }
@@ -102,8 +107,11 @@ module.exports.changeMulti = async (req, res) => {
 module.exports.deleteItem= async (req, res) => {
     const id = req.params.id;
 
-    await Product.deleteOne({
+    await Product.updateOne({
         _id: id
+    },{
+        //Update de xoa mem
+        deleted: true
     });
 
     res.redirect("back");
