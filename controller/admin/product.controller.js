@@ -63,7 +63,9 @@ module.exports.changeStatus = async (req, res) => {
     },{
         //object2 la chua data update
         status: status
-    }); 
+    });
+    //key, Nội dung thông báo
+    req.flash('success', 'Cập nhật trạng thái thành công!');
 
     res.redirect(`back`);
 }
