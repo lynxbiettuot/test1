@@ -58,3 +58,82 @@ if(listButtonPagination.length > 0) {
 }
 //End button pagination
 
+const listButtonChangeStatus = document.querySelectorAll("[button-change-status]");
+if(listButtonChangeStatus.length > 0) {
+    const formChangeStatus = document.querySelector("[form-change-status]");
+
+    listButtonChangeStatus.forEach(button => {
+        button.addEventListener("click",() => {
+            const id = button.getAttribute("data-id");
+            const status = button.getAttribute("data-status");
+            const path = formChangeStatus.getAttribute("data-path");
+
+            const action =  `${path}/${status}/${id}?_method=PATCH`;
+
+            formChangeStatus.action = action;
+            formChangeStatus.submit();
+        });
+    });
+}
+
+//End button-change-status
+
+//check-box-multi
+const checkBoxMulti =  document.querySelector("[checkbox-multi]");
+if(checkBoxMulti) {
+    const inputCheckAll = checkBoxMulti.querySelector("input[name='checkall']");
+    const listInputId = checkBoxMulti.querySelectorAll("input[name='id']");
+    inputCheckAll.addEventListener("click", () => {
+        if(inputCheckAll.checked) {
+            listInputId.forEach((input) => {
+                input.checked = true;
+            });
+        }else {
+            listInputId.forEach((input) => {
+                input.checked = false;
+            });
+        }
+    });
+
+    listInputId.forEach(inputId => {
+        inputId.addEventListener("click", ()=> {
+            const countInputIdChecked = checkBoxMulti.querySelectorAll("input[name='id']:checked").length;
+            const lengthInputId = listInputId.length;
+            if(countInputIdChecked == lengthInputId) {
+                inputCheckAll.checked = true;
+            } else {
+                inputCheckAll.checked = false;
+            }
+        });
+    });
+}
+//End-checkbox-multi
+
+//form-change-multi
+    const formChangeMulti = document.querySelector("[form-change-multi]");
+    if(formChangeMulti) {
+        formChangeMulti.addEventListener ("submit", (event) => {
+            event.preventDefault();
+            
+            const listInputChecked = document.querySelectorAll("input[name='id']:checked");
+            if(listInputChecked.length > 0) {
+                const ids = [];
+
+                listInputChecked.forEach((input) => {
+                    const id = input.value;
+                    ids.push(id);
+                });
+
+
+                const stringIds = ids.join(", ");
+
+                const input = formChangeMulti.querySelector("input[name='ids']");
+                input.value = stringIds;
+
+                formChangeMulti.submit();
+            }else { 
+                alert("Vui lòng chọn ít nhất một bản nghi");
+            }
+        });
+    }
+//end form change multi

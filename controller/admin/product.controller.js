@@ -5,6 +5,7 @@ const paginationHelper = require("../../helpers/pagination.helper.js");
 const { isObjectIdOrHexString } = require("mongoose");
 const systemConfig = require("../../config/system.js");
 
+//[GET] /admin/products
 module.exports.index = async (req, res) => {
     //Lấy data
     // console.log(req.query);// Sau dau '?'
@@ -47,6 +48,7 @@ module.exports.index = async (req, res) => {
     });
 }
 
+//[PATCH] /admin/products/:status/:id
 module.exports.changeStatus = async (req, res) => {
     const status = req.params.status
     const id = req.params.id
@@ -61,3 +63,37 @@ module.exports.changeStatus = async (req, res) => {
 
     res.redirect(`back`);
 }
+
+//[PATCH] /admin/products/change-multi
+module.exports.changeMulti = async (req, res) => {
+    //Tất cả các giá trị người dùng nhập trong form sẽ luôn ở trong req.body
+    const type = req.body.type;
+    let ids = req.body.ids;
+    ids = ids.split(", ");
+
+    switch(type) {
+        case "active":
+            await Product.updateMany({
+                //object 1 la truyen vao key muon tim
+                _id: { $in: ids }
+            },{
+                //object2 la chua data update
+                status: type
+            }); 
+            break;
+        case "inactive":
+            await Product.updateMany({
+                //object 1 la truyen vao key muon tim
+                _id: { $in: ids }
+            },{
+                //object2 la chua data update
+                status: type
+            }); 
+            break;
+        
+        default:
+            break;
+    }
+
+    res.redirect(`back`);
+}  

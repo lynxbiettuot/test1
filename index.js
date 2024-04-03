@@ -1,7 +1,9 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const Database = require("./config/database.js");// Lấy dữ liệu với database
-const systemConfig = require("./config/system.js");  
+const systemConfig = require("./config/system.js"); 
+const methodOverride = require('method-override');
+const bodyParser = require('body-parser');   
 dotenv.config();
 
 Database.connect();//Kết nối với db
@@ -15,7 +17,12 @@ const port = process.env.PORT;//Bao mat bien port
 app.set('view engine', 'pug');
 app.set('views', './views');
 
-app.use(express.static('public'))
+app.use(express.static('public'));
+
+app.use(methodOverride('_method'));
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
  
 // app local variable
 app.locals.prefixAdmin = systemConfig.prefixAdmin;//Dùng bất cứ đâu cũng được
