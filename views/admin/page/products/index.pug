@@ -5,8 +5,12 @@ include ../../mixins/pagination.pug
 
 block main
   - if (messages.success)
-      div(class="alert alert-success")
-        |  #{messages.success}
+    div(
+      class="alert alert-success"
+      show-alert 
+      data-time="5000" 
+    )
+      | #{messages.success}
   
   h1(class="mb-4") Danh sách sản phẩm
 
@@ -22,27 +26,33 @@ block main
   .card.mb-3
     .card-header Danh sách
     .card-body
-      
-      form(
-        action=`/${prefixAdmin}/products/change-multi?_method=PATCH`
-        method="POST"
-				form-change-multi
-      ) 
-        .d-flex.align-items-start
-          .form-group
-            select(name="type" class="form-control")
-              option(value="active") Hoạt động
-              option(value="inactive") Dừng hoạt động
-              option(value="change-position") Thay đổi vị trí
-              option(value="delete-all") Xóa tất cả
-          .form-group.d-none   
-            input(
-              type="text"
-              name="ids"
-              value=""
-              class="form-control"
-            )
-          button(type="submit" class="btn btn-primary") Áp dụng
+      .row
+        .col-8
+          form(
+            action=`/${prefixAdmin}/products/change-multi?_method=PATCH`
+            method="POST"
+            form-change-multi
+          ) 
+            .d-flex.align-items-start
+              .form-group
+                select(name="type" class="form-control")
+                  option(value="active") Hoạt động
+                  option(value="inactive") Dừng hoạt động
+                  option(value="change-position") Thay đổi vị trí
+                  option(value="delete-all") Xóa tất cả
+              .form-group.d-none   
+                input(
+                  type="text"
+                  name="ids"
+                  value=""
+                  class="form-control"
+                )
+              button(type="submit" class="btn btn-primary") Áp dụng
+        .col-4
+          a(
+            href=`/${prefixAdmin}/products/create`
+            class="btn btn-outline-success"
+          ) + Thêm mới
       
       table(
         class = "table table-hover table-sm"

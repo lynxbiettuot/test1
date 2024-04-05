@@ -134,4 +134,32 @@ module.exports.deleteItem= async (req, res) => {
     });
 
     res.redirect("back");
-}  
+} 
+
+//[DELETE] /admin/products/create
+module.exports.create = async (req, res) => {
+    res.render("admin/page/products/create" , {
+        pageTitle: "Thêm mới sản phẩm"
+    });
+}
+
+//[DELETE] /admin/products/create
+module.exports.createPost = async (req, res) => {
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
+    if(req.body.position) {
+        req.body.position = parseInt(req.body.position);
+    }else {
+        const countProduct = await Product.countDocuments();
+        req.body.position = countProduct + 1;
+    }
+
+    //Khoi tao sp
+    const record = new Product(req.body);
+    //Luu 1 sp vao database
+    await record.save();
+
+    req.flash("success", "Thêm mới sản phẩm thành công");
+    res.redirect(`/${systemConfig.prefixAdmin}/products`);
+} 

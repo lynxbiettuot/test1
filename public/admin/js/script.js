@@ -180,4 +180,13 @@ if(listButtonDelete.length > 0) {
 }
 //End Button-delete
 
-//
+//show alert
+    const showAlert = document.querySelector("[show-alert]");
+    if(showAlert) {
+        const time = showAlert.getAttribute("data-time");
+        time = parseInt(time);
+        setTimeout(() => {
+            showAlert.classList.add("alert-hidden");
+        },time);
+    }
+//end show alert
