@@ -154,6 +154,11 @@ module.exports.createPost = async (req, res) => {
         const countProduct = await Product.countDocuments();
         req.body.position = countProduct + 1;
     }
+    //them 1 truong data thumbnail
+    if(req.file) {
+        req.body.thumbnail = `/uploads/${req.file.filename}`;
+    }
+
 
     //Khoi tao sp
     const record = new Product(req.body);
