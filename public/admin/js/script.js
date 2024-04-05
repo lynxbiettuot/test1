@@ -190,3 +190,19 @@ if(listButtonDelete.length > 0) {
         },time);
     }
 //end show alert
+
+//upload-image
+const uploadImage = document.querySelector("[upload-image]");
+if(uploadImage) {
+    const uploadImageInput = uploadImage.querySelector("[upload-image-input]");
+    const uploadImagePreview = uploadImage.querySelector("[upload-image-preview]");
+
+    uploadImageInput.addEventListener("change", () => {
+        const file = uploadImageInput.files[0];//lay file dau tien
+        //const [file] = uploadImageInput.files cung duoc(destructoring)
+        if(file) {
+            uploadImagePreview.src = URL.createObjectURL(file); 
+        }
+    });
+}
+//end-upload-image
