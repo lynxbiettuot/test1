@@ -185,8 +185,6 @@ module.exports.edit = async (req, res) => {
         pageTitle: "Chỉnh sửa sản phẩm",
         product: product
     });
-
-    
 }
 
 //[PATCH] /admin/products/edit/:id
@@ -212,4 +210,19 @@ module.exports.editPatch = async (req, res) => {
     },req.body);
     req.flash("success", "Chỉnh sửa sản phẩm thành công");
     res.redirect(`back`);
+}
+
+//[GET] /admin/products/detail/:id
+module.exports.detail = async (req, res) => {
+    const id = req.params.id;
+
+    const product = await Product.findOne({
+        _id: id,
+        deleted: false
+    });
+
+    res.render("admin/page/products/detail", {
+        pageTitle: `Chi tiết ${product.title}`,
+        product: product
+    });
 }
