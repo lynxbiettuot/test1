@@ -143,7 +143,7 @@ module.exports.create = async (req, res) => {
     });
 }
 
-//[DELETE] /admin/products/create
+//[POST] /admin/products/create
 module.exports.createPost = async (req, res) => {
     req.body.price = parseInt(req.body.price);
     req.body.discountPercentage = parseInt(req.body.discountPercentage);
@@ -167,4 +167,49 @@ module.exports.createPost = async (req, res) => {
 
     req.flash("success", "Thêm mới sản phẩm thành công");
     res.redirect(`/${systemConfig.prefixAdmin}/products`);
-} 
+}
+
+// [GET] / admin/products/edit/:id
+module.exports.edit = async (req, res) => {
+    const id = req.params.id;
+    console.log(req.params);
+
+    const product = await Product.findOne({
+        _id: id,
+        deleted: false
+    });
+
+    console.log(product);
+
+    res.render("admin/page/products/edit", {
+        pageTitle: "Chỉnh sửa sản phẩm",
+        product: product
+    });
+
+    
+}
+
+//[PATCH] /admin/products/edit/:id
+module.exports.editPatch = async (req, res) => {
+    const id = req.params.id;
+
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
+    req.body.position = parseInt(req.body.position);
+
+
+    // //them 1 truong data thumbnail
+    if(req.file) {
+        req.body.thumbnail = `/uploads/${req.file.filename}`;
+    }
+
+
+    // //Khoi tao sp
+    await Product.updateOne({
+        _id: id,
+        deleted: false 
+    },req.body);
+    req.flash("success", "Chỉnh sửa sản phẩm thành công");
+    res.redirect(`back`);
+}

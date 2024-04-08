@@ -14,7 +14,7 @@ const productSchema = new mongoose.Schema({
     slug: { 
         type: String,
         //slug hien thi theo tieu de 
-        slug: "title" ,
+        slug: "title",
         unique: true
     },
     deleted: {
