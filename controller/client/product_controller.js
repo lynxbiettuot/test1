@@ -16,3 +16,23 @@ module.exports.index = async (req, res) => {
         products : products//tra ra ngoai giao dien biến products chứa kiểu dữ liệu là mảng products
     });
 }
+
+module.exports.detail = async (req, res) => {
+    //Viết logic để vào model lấy database
+    const slug = req.params.slug;
+
+    const product = await Product.findOne({
+        slug: slug,
+        deleted: false,
+        status: "active"
+    });
+
+    if(product) {
+        res.render("client/pages/products/detail", {
+            pageTitle : "Chi tiết sản phẩm",
+            product: product
+        });
+    }else {
+        res.redirect("back");
+    }
+}
