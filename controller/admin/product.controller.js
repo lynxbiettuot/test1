@@ -5,7 +5,7 @@ const paginationHelper = require("../../helpers/pagination.helper.js");
 const { isObjectIdOrHexString } = require("mongoose");
 const systemConfig = require("../../config/system.js");
 
-//[GET] /admin/products
+//[GET] /admin/products/
 module.exports.index = async (req, res) => {
     //Lấy data
     // console.log(req.query);// Sau dau '?'
@@ -36,12 +36,25 @@ module.exports.index = async (req, res) => {
     const countRecords = await Product.countDocuments(find);
     const objectPagination = paginationHelper(req,countRecords);
 //End-Kết thúc phân trang
+
+//Sort
+    const sort = {};
+    if(req.query.sortKey && req.query.sortValue) {
+        const sortKey = req.query.sortKey;
+        const sortValue = req.query.sortValue;   
+
+        sort[sortKey] = sortValue;
+    }else {
+        sort.position = "desc";
+    }
+//End-Sort
+
     //Giới hạn 4 phần tử khi dùng limit và bỏ qua 4 phần tử đầu khi dùng skip là hai hàm có sẵn
     const products = await Product
     .find(find)
     .limit(objectPagination.limitItems)
     .skip(objectPagination.skip)
-    .sort({ position: "desc" });
+    .sort(sort);
 
     res.render("admin/page/products/index.pug", {
         pageTitle : "Trang danh sách sản phẩm",

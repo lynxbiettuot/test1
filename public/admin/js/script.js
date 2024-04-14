@@ -206,3 +206,30 @@ if(uploadImage) {
     });
 }
 //end-upload-image
+
+//sort
+    const sort = document.querySelector("[sort]");
+    if(sort) {
+        let url = new URL(window.location.href);
+        const sortSelect = sort.querySelector("[sort-select]");
+        //Lắng nghe, thay đổi, sắp xếp
+        sortSelect.addEventListener("change", () =>{
+            const [sortKey, sortValue] = sortSelect.value.split("-");
+            //gan gia tri cua bien sortKey va sortValue nhu nguoi ta gui len
+            url.searchParams.set("sortKey", sortKey);
+            url.searchParams.set("sortValue", sortValue);
+            //Gan lai dia chi cuar window bang dia chi cua bien url
+            window.location.href = url.href;
+        });
+
+        //Thêm select cho lựa chọn
+        const selectedSortKey = url.searchParams.get("sortKey");
+        const selectedSortValue= url.searchParams.get("sortValue");
+
+        if(selectedSortKey && selectedSortValue) {
+            const stringSort = selectedSortKey + "-" + selectedSortValue;
+            const optionSelected = sortSelect.querySelector(`option[value="${stringSort}"]`);
+           optionSelected.selected = true;// mac dinh duoc chon
+        }
+    }    
+//end-sort
