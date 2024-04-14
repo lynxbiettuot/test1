@@ -1,11 +1,13 @@
 const cloudinary = require('cloudinary').v2;
 const streamifier = require('streamifier');
-   
+require('dotenv').config();
+
 cloudinary.config({ 
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_KEY,
-  api_secret: process.env.CLOUD_SECRET
-});
+    cloud_name: process.env.CLOUD_NAME, 
+    api_key: process.env.CLOUD_KEY, 
+    api_secret: process.env.CLOUD_SECRET 
+  });
+  
 
 module.exports.uploadSingle = (req, res, next) => {
     if(req.file) {
@@ -26,11 +28,12 @@ module.exports.uploadSingle = (req, res, next) => {
         };
     
         async function upload(req) {
-            try {
+            try{
                 const result = await streamUpload(req);
                 req.body[req.file.fieldname] = result.url;
                 next();
-            }catch(error) {
+            }catch(error){
+                console.log(error);
                 next();
             }
         }
