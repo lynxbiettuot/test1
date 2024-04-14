@@ -155,9 +155,9 @@ module.exports.createPost = async (req, res) => {
         req.body.position = countProduct + 1;
     }
     //them 1 truong data thumbnail
-    if(req.file) {
-        req.body.thumbnail = `/uploads/${req.file.filename}`;
-    }
+    // if(req.file) {
+    //     req.body.thumbnail = `/uploads/${req.file.filename}`;
+    // }
 
 
     //Khoi tao sp
@@ -198,9 +198,9 @@ module.exports.editPatch = async (req, res) => {
 
 
     // //them 1 truong data thumbnail
-    if(req.file) {
-        req.body.thumbnail = `/uploads/${req.file.filename}`;
-    }
+    // if(req.file) {
+    //     req.body.thumbnail = `/uploads/${req.file.filename}`;
+    // }
 
 
     // //Khoi tao sp
