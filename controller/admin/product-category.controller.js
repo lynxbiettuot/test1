@@ -3,8 +3,15 @@ const systemConfig = require("../../config/system.js");
 
 //[GET] /admin/product-category
 module.exports.index = async (req, res) => {
+    const records = await ProductCategory.find({
+        deleted: false
+    });
+
+    console.log(records);
+
     res.render("admin/page/product-category/index.pug", {
-        pageTitle : "Trang chủ"
+        pageTitle : "Trang chủ",
+        records: records
     });
 }
 
