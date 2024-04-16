@@ -1,5 +1,6 @@
 const  ProductCategory = require("../../models/product-category.model.js");
 const systemConfig = require("../../config/system.js");
+const createTreeHelper = require("../../helpers/createTree.helper.js");
 
 //[GET] /admin/product-category
 module.exports.index = async (req, res) => {
@@ -21,11 +22,25 @@ module.exports.create = async (req, res) => {
         deleted: false
     });
 
-    console.log(records);
+    // function createTree(arr, parentId = "") {
+    //     const tree = [];
+    //     arr.forEach((item) => {
+    //       if (item.parent_id === parentId) {
+    //         const children = createTree(arr, item.id);
+    //         if (children.length > 0) {
+    //           item.children = children;
+    //         }
+    //         tree.push(item);
+    //       }
+    //     });
+    //     return tree;
+    // }
+
+    const newRecords = createTreeHelper(records);//Ham tao cay long nhau
 
     res.render("admin/page/product-category/create.pug", {
         pageTitle : "Thêm danh mục mới sản phẩm",
-        records: records
+        records: newRecords
     });
 }
 
