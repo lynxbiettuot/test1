@@ -83,4 +83,19 @@ module.exports.edit = async (req, res) => {
     } catch (error) {
       res.redirect(`/${systemConfig.prefixAdmin}/product-category`);
     }
-  };
+};
+
+// [PATCH] /admin/products-category/edit/:id
+module.exports.editPatch = async (req, res) => {
+    const id = req.params.id;
+
+    req.body.position = parseInt(req.body.position);
+
+    try{
+        await ProductCategory.updateOne({_id: id}, req.body);
+        req.flash("success", `Cập nhật danh mục thành công`);
+    }catch(error) {
+        req.flash("error", `Cập nhật danh mục không thành công`);
+    }
+    res.redirect("back");
+};
