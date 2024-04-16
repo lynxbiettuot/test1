@@ -22,4 +22,6 @@ route.post(
     controller.createPost
 );
 
+route.get("/edit/:id",controller.edit);
+
 module.exports = route;
