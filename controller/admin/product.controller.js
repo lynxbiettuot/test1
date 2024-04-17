@@ -1,5 +1,6 @@
 //[GET] /admin/products
 const Product = require("../../models/product.model.js");
+const ProductCategory = require("../../models/product-category.model.js");
 const filterHelper = require("../../helpers/filter.helper.js");
 const paginationHelper = require("../../helpers/pagination.helper.js");
 const { isObjectIdOrHexString } = require("mongoose");
@@ -151,6 +152,12 @@ module.exports.deleteItem= async (req, res) => {
 
 //[DELETE] /admin/products/create
 module.exports.create = async (req, res) => {
+    const category = await ProductCategory.find({
+        deleted: false
+    });
+
+    console.log(category);
+
     res.render("admin/page/products/create" , {
         pageTitle: "Thêm mới sản phẩm"
     });
