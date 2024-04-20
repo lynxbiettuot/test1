@@ -233,3 +233,62 @@ if(uploadImage) {
         }
     }    
 //end-sort
+
+//Nút cập nhật bên phân quyền
+const buttonSubmitPermissions = document.querySelector("[ button-submit-permissions]");
+
+if(buttonSubmitPermissions) {
+    //Tạo một mảng các quyền truy cập
+    
+    buttonSubmitPermissions.addEventListener("click", () => {
+        const tablePermission = document.querySelector("[table-permissions]");
+        const role = [];
+        const rows = tablePermission.querySelectorAll("tbody tr[data-name]");
+
+        rows.forEach((row, index) => {
+            const dataName = row.getAttribute("data-name");
+            const inputs = row.querySelectorAll("input");//Lay cac o input
+            if(dataName == "id") {
+                inputs.forEach(input => {
+                    const id = input.value;// Lay duoc id tu cac o input
+                    role.push({
+                        id: id,
+                        permission: []
+                    });
+                })
+            }else {
+                inputs.forEach((input, index) => {
+                    const inputChecked = input.checked;// Lay duoc o da check tu cac o input
+                    if(inputChecked) {
+                        role[index].permission.push(dataName);
+                    }
+                });
+            }
+        });
+        console.log(role);
+        if(role.length > 0) {
+            const formChangePermissions = document.querySelector("[form-change-permissions]");
+            const inputRoles = formChangePermissions.querySelector("input[name='roles']");
+            inputRoles.value = JSON.stringify(role);
+            formChangePermissions.submit();
+        }
+    });
+}
+
+//Kết thúc nut phân quyền
+
+//Data default permissions
+const dataRecords = document.querySelector("[data-records]");
+if(dataRecords) {
+    const records = JSON.parse(dataRecords.getAttribute("data-records"));
+    const tablePermissions = document.querySelector("[table-permissions]");
+    records.forEach((record,index) => {
+        const permissions = record.permissions;
+        permissions.forEach(permission => {
+            const row = tablePermissions.querySelector(`tr[data-name="${permission}"]`);
+            const input = row.querySelectorAll(`input`)[index];
+            console.log(input);
+            input.checked = true;
+        });
+    });
+}
