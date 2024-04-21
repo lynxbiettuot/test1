@@ -24,10 +24,7 @@ module.exports.index = async (req, res) => {
     });
 
     record.roleTitle = role.title;
-    console.log(role);
   }
-
-  console.log(records);
 
   res.render("admin/page/accounts/index", {
     pageTitle: "Danh sách tài khoản",
@@ -61,3 +58,58 @@ module.exports.createPost = async (req, res) => {
 
   res.redirect(`/${systemConfig.prefixAdmin}/accounts`);
 };
+
+// [GET] /admin/accounts/edit/:id
+module.exports.edit = async (req, res) => {
+  let find = {
+    _id: req.params.id,
+    deleted: false,
+  };
+
+  try{
+    const roles = await Role.find({
+      deleted: false
+    });
+
+    const data = await Account.findOne(find);
+
+    console.log(data);
+
+
+    res.render("admin/page/accounts/edit", {
+      pageTitle: "Chỉnh sửa tài khoản",
+      data: data,
+      roles: roles
+    });
+  }catch(error) {
+    res.redirect(`/${systemConfig.prefixAdmin}/accounts`);
+  }
+};
+
+// [PATCH] /admin/accounts/edit/:id
+module.exports.editPatch = async (req, res) => {
+  try {
+    if(req.body.password) {
+      req.body.password = md5(req.body.password);
+    } else {
+      //xoa truowng password truoc khi vao trang
+      delete req.body.password;
+    } 
+  
+    await Account.updateOne({
+      _id: req.params.id,
+      deleted: false
+    }, req.body);
+  
+    console.log(req.params.id);
+    console.log(req.body);
+  
+    res.redirect("back");
+  }catch(error){
+    res.redirect(`/${systemConfig.prefixAdmin}/accounts`);
+  }
+};
+
+
+
+
