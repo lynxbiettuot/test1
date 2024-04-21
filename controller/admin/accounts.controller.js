@@ -1,6 +1,8 @@
+var md5 = require('md5');// thư viện mã hóa password
+
 const Account = require("../../models/account.model.js");
 const Role = require("../../models/role.model.js");
-var md5 = require('md5');// thư viện mã hóa password
+
 
 const systemConfig = require("../../config/system.js");
 const generateHelper = require("../../helpers/generate.helper.js");
@@ -14,6 +16,18 @@ module.exports.index = async (req, res) => {
   // End Find
 
   const records = await Account.find(find);
+
+  for(const record of records) {
+    const role = await Role.findOne({
+      _id: record.role_id,
+      deleted: false
+    });
+
+    record.roleTitle = role.title;
+    console.log(role);
+  }
+
+  console.log(records);
 
   res.render("admin/page/accounts/index", {
     pageTitle: "Danh sách tài khoản",
