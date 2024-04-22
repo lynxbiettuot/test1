@@ -46,6 +46,10 @@ module.exports.create = async (req, res) => {
 
 //[POST] /admin/product-category/create
 module.exports.createPost = async (req, res) => {
+    if(!res.locals.role.includes("products-category_create")) {
+        res.send("Không có quyền truy cập");
+        return;
+    }
     if(req.body.position) {
         req.body.position = parseInt(req.body.position);
     }else {
