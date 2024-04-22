@@ -1,6 +1,7 @@
 //[GET] /admin/products
 const Product = require("../../models/product.model.js");
 const ProductCategory = require("../../models/product-category.model.js");
+const Account = require("../../models/account.model.js");
 const filterHelper = require("../../helpers/filter.helper.js");
 const paginationHelper = require("../../helpers/pagination.helper.js");
 const { isObjectIdOrHexString } = require("mongoose");
@@ -57,6 +58,15 @@ module.exports.index = async (req, res) => {
     .limit(objectPagination.limitItems)
     .skip(objectPagination.skip)
     .sort(sort);
+
+    for(const product of products) {
+        const createdBy = await Account.findOne({
+            _id: product.createdBy
+        });
+        if(createdBy) {
+            product.createdByFullName = createdBy.fullName;
+        }
+    }
 
     res.render("admin/page/products/index.pug", {
         pageTitle : "Trang danh sách sản phẩm",
@@ -115,7 +125,9 @@ module.exports.changeMulti = async (req, res) => {
             await Product.updateMany ({
                 _id: { $in : ids}
             },{
-                deleted: true
+                deleted: true,
+                deletedAt: new Date(),
+                deletedBy: res.locals.user.id,
             });
             break;
         case "change-position":
@@ -145,7 +157,9 @@ module.exports.deleteItem= async (req, res) => {
         _id: id
     },{
         //Update de xoa mem
-        deleted: true
+        deleted: true,
+        deletedAt: new Date(),
+        deletedBy: res.locals.user.id,
     });
 
     res.redirect("back");
@@ -176,12 +190,10 @@ module.exports.createPost = async (req, res) => {
         const countProduct = await Product.countDocuments();
         req.body.position = countProduct + 1;
     }
-    //them 1 truong data thumbnail
-    // if(req.file) {
-    //     req.body.thumbnail = `/uploads/${req.file.filename}`;
-    // }
 
-
+    //Tạo một trường mới là id người thêm sản phẩm
+    req.body.createdBy = res.locals.user.id;
+    
     //Khoi tao sp
     const record = new Product(req.body);
     //Luu 1 sp vao database
@@ -221,6 +233,7 @@ module.exports.editPatch = async (req, res) => {
     req.body.discountPercentage = parseInt(req.body.discountPercentage);
     req.body.stock = parseInt(req.body.stock);
     req.body.position = parseInt(req.body.position);
+    req.body.updatedBy = res.locals.user.id;
 
 
     // //them 1 truong data thumbnail

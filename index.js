@@ -8,6 +8,7 @@ const flash = require('express-flash');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const path = require('path');
+const moment = require("moment");//Nhúng thư viện moment để dùng cục bộ vì không dùng được moment ở pug
 dotenv.config();
 
 Database.connect();//Kết nối với db
@@ -36,6 +37,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
  
 // app local variable
 app.locals.prefixAdmin = systemConfig.prefixAdmin;//Dùng bất cứ đâu cũng được
+app.locals.moment = moment;//Dùng bất cứ đâu cũng được
 
  /* New Route to the TinyMCE Node module */
  app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));

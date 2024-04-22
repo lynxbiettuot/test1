@@ -22,6 +22,10 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    createdBy: String,
+    deletedBy: String,
+    deletedAt: String,
+    updatedBy: String
 },{
     //them hai thuoc tinh
     timestamps: true
