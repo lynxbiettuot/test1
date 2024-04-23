@@ -5,6 +5,7 @@ const systemConfig = require("../../config/system");// Lấy ra biến trong cò
 const roleRoutes = require("./role.route.js");
 const accountRoutes = require("./accounts.route.js");
 const authRoutes = require("./authen.route.js");
+const myAccountRoute = require("./my-account.route.js");
 
 const authMiddleware = require("../../middlewares/admin/auth.middleware.js");
 
@@ -39,4 +40,10 @@ module.exports = (app) => {
     );
 
     app.use(path_admin + "/auth", authRoutes);
+
+    app.use(
+        path_admin + "/my-account",
+        authMiddleware.requireAuth,
+        myAccountRoute
+    );
 }
