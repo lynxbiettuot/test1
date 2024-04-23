@@ -25,7 +25,11 @@ const productSchema = new mongoose.Schema({
     createdBy: String,
     deletedBy: String,
     deletedAt: String,
-    updatedBy: String
+    updatedBy: String,
+    featured: {
+        type: String,
+        default: "0"
+    }
 },{
     //them hai thuoc tinh
     timestamps: true

@@ -235,13 +235,6 @@ module.exports.editPatch = async (req, res) => {
     req.body.position = parseInt(req.body.position);
     req.body.updatedBy = res.locals.user.id;
 
-
-    // //them 1 truong data thumbnail
-    // if(req.file) {
-    //     req.body.thumbnail = `/uploads/${req.file.filename}`;
-    // }
-
-
     // //Khoi tao sp
     await Product.updateOne({
         _id: id,
