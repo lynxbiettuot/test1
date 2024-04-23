@@ -38,8 +38,6 @@ module.exports.create = async (req, res) => {
     deleted: false,
   });
 
-  console.log(roles);
-
   res.render("admin/page/accounts/create.pug", {
     pageTitle: "Danh sách tài khoản",
     roles: roles
