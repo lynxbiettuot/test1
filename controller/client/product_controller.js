@@ -1,6 +1,7 @@
-//[GET] / product 
 const Product = require("../../models/product.model.js");//Nhung file product.model.js
+const productCategory = require("../../models/product-category.model.js");//Nhung file product.model.js
 
+//[GET] / product
 module.exports.index = async (req, res) => {
     //Viết logic để vào model lấy database
     const products = await Product.find({
@@ -13,6 +14,32 @@ module.exports.index = async (req, res) => {
 
     res.render("client/pages/products/index.pug", {
         pageTitle : "Danh sách sản phẩm",
+        products : products//tra ra ngoai giao dien biến products chứa kiểu dữ liệu là mảng products
+    });
+}
+
+// [GET] producst/:slugCategory                             
+module.exports.slugCategory = async (req, res) => {
+    const slugCategory = req.params.slugCategory;
+
+    const category = await productCategory.findOne({
+        slug: slugCategory,
+        deleted: false,
+        status: "active"
+    });
+    
+    const products = await Product.find({    
+        product_category_id: category.id,
+        deleted: false,
+        status: "active"
+    }).sort({ position : "desc" });
+
+    for(const item of products) {
+        item.newPrice = (item.price * (100 - item.discountPercentage) /100).toFixed();
+    }
+
+    res.render("client/pages/products/index.pug", {
+        pageTitle : category.title,
         products : products//tra ra ngoai giao dien biến products chứa kiểu dữ liệu là mảng products
     });
 }
