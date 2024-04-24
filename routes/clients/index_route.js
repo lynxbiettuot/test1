@@ -2,6 +2,7 @@
 
 const homeRoute = require("./home_route.js");//Nhúng file home_route vào file này
 const productRoute = require("./product_route.js");
+const searchRoute = require("./search.route.js");
 const categoryMiddleware = require("../../middlewares/client/category.middleware.js");
 
 module.exports = (app) => {
@@ -11,4 +12,5 @@ module.exports = (app) => {
 
     app.use("/products", productRoute); 
 
+    app.use("/search", searchRoute);
 }
