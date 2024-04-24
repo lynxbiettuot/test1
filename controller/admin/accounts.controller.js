@@ -71,9 +71,6 @@ module.exports.edit = async (req, res) => {
 
     const data = await Account.findOne(find);
 
-    console.log(data);
-
-
     res.render("admin/page/accounts/edit", {
       pageTitle: "Chỉnh sửa tài khoản",
       data: data,
