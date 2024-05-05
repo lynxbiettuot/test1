@@ -8,4 +8,6 @@ const controller = require("../../controller/client/cart.controller.js");
 
 route.post("/add/:productId",controller.addPost);
 
+route.get("/",controller.index);
+
 module.exports = route;
