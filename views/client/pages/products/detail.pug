@@ -1,8 +1,11 @@
 extends ../../layouts/default.pug
 include ../../mixins/boxhead.pug
-
+include ../../mixins/alert.pug
 
 block main
+  +alert-success()
+  +alert-error()
+
   .product-detail
     .container.my-5
       .row
@@ -47,7 +50,7 @@ block main
             ) Thêm vào giỏ hàng
 
     hr
-
+    
     .container.my-5
       .row
         .col-12

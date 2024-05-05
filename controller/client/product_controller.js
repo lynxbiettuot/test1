@@ -1,5 +1,5 @@
 const Product = require("../../models/product.model.js");//Nhung file product.model.js
-const productCategory = require("../../models/product-category.model.js");//Nhung file product.model.js
+const ProductCategory = require("../../models/product-category.model.js");//Nhung file product.model.js
 
 
 //[GET] / product

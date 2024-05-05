@@ -8,7 +8,7 @@ module.exports.index = async (req, res) => {
     }).limit(6).select("-description");//giơi hạn lấy 2 sp
 
     for(const product of featureProduct) {
-        product.priceNew = product.price * ((100 - product.discountPercentage)/100).toFixed;
+        product.priceNew = (product.price * (100 - product.discountPercentage)/100).toFixed(0);
     }
 
     const newProduct = await Product.find({
@@ -18,7 +18,7 @@ module.exports.index = async (req, res) => {
     }).sort({position : "desc" }).limit(6).select("-description");//giơi hạn lấy 2 sp
 
     for(const product of newProduct) {
-        product.priceNew = product.price * ((100 - product.discountPercentage)/100).toFixed;
+        product.priceNew = (product.price * (100 - product.discountPercentage)/100).toFixed(0);
     }
 
     res.render("client/pages/home/index.pug",{
