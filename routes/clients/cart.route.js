@@ -10,4 +10,6 @@ route.post("/add/:productId",controller.addPost);
 
 route.get("/",controller.index);
 
+route.get("/delete/:productId",controller.deleteItem);
+
 module.exports = route;
