@@ -35,3 +35,5 @@ header.header
               a(href="/products") Sản phẩm
               //- Thay thế bằng file mixin để đệ quy
               +submenu(layoutProductCategory)
+            li
+              a(href="/cart") Giỏ hàng (#{miniCart ? miniCart.products.length : 0})
