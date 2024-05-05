@@ -1,6 +1,5 @@
 //button-status
 const listButtonStatus = document.querySelector("[button-status]");
-console.log(listButtonStatus);
 
 //end button status
 
@@ -14,3 +13,18 @@ if(showAlert) {
     },time);
 }
 //end show alert
+
+// Update cart
+const tableCart = document.querySelector("[table-cart]");
+if(tableCart) {
+    const inputQuantity = tableCart.querySelectorAll("input[name='quantity']");
+    inputQuantity.forEach(input => {
+        input.addEventListener("change", () => {
+            const quantity = input.value;
+            const productId = input.getAttribute("item-id");
+
+            window.location.href = `/cart/update/${productId}/${quantity}`
+        });
+    });
+}
+//End Update cart

@@ -12,4 +12,6 @@ route.get("/",controller.index);
 
 route.get("/delete/:productId",controller.deleteItem);
 
+route.get("/update/:productId/:quantity",controller.updateItem)
+
 module.exports = route;
