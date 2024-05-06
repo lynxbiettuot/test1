@@ -33,7 +33,9 @@ module.exports.index = async (req, res) => {
 //[POST] /checkout/order
 module.exports.order = async (req, res) => {
   const cartId = req.cookies.cartId;
-  const userInfor = req.body;
+  const userInfo = req.body;
+
+  console.log(userInfo);
 
   const cart = await Cart.findOne({
     _id: cartId
@@ -58,7 +60,7 @@ module.exports.order = async (req, res) => {
 
   const dataOrder = {
     cart_id: cartId,
-    userInfor: userInfor,
+    userInfo: userInfo,
     products: products
   };
 
@@ -73,4 +75,39 @@ module.exports.order = async (req, res) => {
     products: []// Cap nhat o ben gio hang cac san pham da mua
   });
    res.redirect(`/checkout/success/${order.id}`);
+}
+
+//[GET] /checkout/success/:orderId
+module.exports.success = async (req,res) => {
+  try{
+    const orderId = req.params.orderId;
+
+    const order = await Order.findOne({
+      _id: orderId
+    });
+
+    order.totalPrice = 0;
+
+    for (const product of order.products) {
+      const productInfor = await Product.findOne({
+          _id: product.product_id
+      });
+
+      product.title = productInfor.title;
+      product.thumbnail = productInfor.thumbnail;
+      product.priceNew = (product.price * (100 - product.discountPercentage)/100).toFixed(0);
+      product.totalPrice = product.priceNew * product.quantity;
+
+      order.totalPrice += product.totalPrice;
+    }
+
+    console.log(order);
+
+    res.render("client/pages/checkout/success", {
+      pageTitle: "Đặt hàng thành công",
+      order: order
+    });
+  }catch(error) {
+    res.redirect("/");
+  }
 }
