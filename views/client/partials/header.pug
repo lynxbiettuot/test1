@@ -37,7 +37,11 @@ header.header
               +submenu(layoutProductCategory)
             li
               a(href="/cart") Giỏ hàng (#{miniCart ? miniCart.products.length : 0})
-            li
-              a(href="/user/login") Đăng nhập
-            li
-              a(href="/user/register" class="btn btn-info") Đăng ký
+            if(user)
+              li
+                a(href="/user/logout" class="btn btn-danger") Đăng xuất
+            else 
+              li
+                a(href="/user/login" class="btn btn-success") Đăng nhập
+              li
+                a(href="/user/register" class="btn btn-warning") Đăng ký
