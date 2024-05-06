@@ -101,8 +101,6 @@ module.exports.success = async (req,res) => {
       order.totalPrice += product.totalPrice;
     }
 
-    console.log(order);
-
     res.render("client/pages/checkout/success", {
       pageTitle: "Đặt hàng thành công",
       order: order
