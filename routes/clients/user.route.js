@@ -3,6 +3,8 @@ const route = express.Router();
 
 const controller = require("../../controller/client/user.controller");
 
+const authMiddleware = require("../../middlewares/client/auth.middleware.js");
+
 route.get("/register", controller.register);
 
 route.post("/register", controller.registerPost);
@@ -24,5 +26,7 @@ route.post("/password/otp", controller.otpPasswordPost);
 route.get("/password/reset", controller.resetPassword);
 
 route.post("/password/reset", controller.resetPasswordPost);
+
+route.get("/info", authMiddleware.requireAuth, controller.info);
 
 module.exports = route;
