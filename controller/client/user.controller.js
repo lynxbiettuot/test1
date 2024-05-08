@@ -2,6 +2,7 @@ const User = require("../../models/user.model.js");
 const forgotPassword = require("../../models/forgot-password.model.js");
 const md5 = require("md5");
 const generateHelper = require("../../helpers/generate.helper.js");
+const ForgotPassword = require("../../models/forgot-password.model.js");
 
 //[GET] /user/register
 module.exports.register = async (req, res) => {
@@ -89,7 +90,7 @@ module.exports.forgotPassword = async (req, res) => {
     res.render("client/pages/user/forgot-password", {
       pageTitle: "Lấy lại mật khẩu",
     });
-  };
+};
 
 //[POST] /user/password/forgotPasswordPost
 module.exports.forgotPasswordPost = async (req, res) => {
@@ -111,9 +112,75 @@ module.exports.forgotPasswordPost = async (req, res) => {
         expireAt: Date.now() + 3*60*1000,//Chuyen qua tich tac
     }
 
+    console.log(objectForgotPassword);
     const forgotpassword = new forgotPassword(objectForgotPassword);
     await forgotpassword.save();
 
     //Việc 2: gửi mã otp cho gmail
-    res.send("OK");
+    res.redirect(`/user/password/otp?email=${email}`);
+};
+
+// [GET] /user/password/otp
+module.exports.otpPassword = async (req, res) => {
+    const email = req.query.email
+
+    console.log(email);
+
+    res.render("client/pages/user/otp-password", {
+      pageTitle: "Nhập mã OTP:",
+      email: email
+    });
+};
+
+// [POST] /user/password/otp
+module.exports.otpPasswordPost = async (req, res) => {
+    const email = req.body.email;
+    const otp = req.body.otp;
+
+    const result = await ForgotPassword.findOne({
+        email: email,
+        otp: otp
+    });
+
+    if(!result) {
+        req.flash("error", "Mã OTP không hợp lệ!");
+        res.redirect("back");
+        return;
+    }
+
+    const user = await User.findOne({
+        email: email,
+    });
+
+    res.cookie("tokenUser",user.tokenUser);
+
+    res.redirect("/user/password/reset");
+};
+
+// [GET] /user/password/reset
+module.exports.resetPassword= async (req, res) => {
+    res.render("client/pages/user/reset-password", {
+        pageTitle: "Đổi mật khẩu"
+    });
+};
+
+// [POST] /user/password/reset
+module.exports.resetPasswordPost= async (req, res) => {
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+    const tokenUser = req.cookies.tokenUser;
+
+    if(password != confirmPassword) {
+        req.flash("error", "Xác nhận mật khẩu không khớp");
+        res.redirect("back");
+        return;
+    }
+
+    await User.updateOne({
+        tokenUser: tokenUser
+    }, {
+        password: md5(password) 
+    });
+    req.flash("success", "Đổi mật khẩu thành công");
+    res.redirect("/");
 };

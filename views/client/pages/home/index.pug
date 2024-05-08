@@ -1,8 +1,10 @@
 extends ../../layouts/default.pug
 include ../../mixins/boxhead.pug
+include ../../mixins/alert.pug
 
 block main 
-    h1 Trang chủ
+    +alert-success()
+    
     .container.my-3
         .row
             .col-12
